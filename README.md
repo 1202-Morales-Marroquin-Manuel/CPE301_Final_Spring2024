@@ -1,7 +1,7 @@
 # Arduino Swamp Cooling System
 ## CPE 301.1102 Embedded Systems Design
 ### University of Nevada, Reno
-#### Dr. Bashira Akter Anima
+#### Instructor: Dr. Bashira Akter Anima
 
 ---
 
@@ -31,3 +31,6 @@ For further details on component specifications and project outcomes, refer to t
 ### Authors
 - Christian Culanag
 - Manuel Morales-Marroquin
+
+### Collaboration and Work Distribution
+Both team members equally shared the workload, tackling both coding and design aspects of the project. We worked together on a single device for coding to immediately share feedback and make decisions quickly. This setup helped us make sure everything was done right the first time, whether we were sitting side by side or virtually. For the design and schematics, we each took on parts that matched our strengths but always came together to review each other's work. This teamwork ensured our project was well-coordinated and met all our goals.
