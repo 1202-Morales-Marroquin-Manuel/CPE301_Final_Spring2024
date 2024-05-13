@@ -370,7 +370,31 @@ void startButtonRoutine() {
 }
 
 void updateDisplay() {
+  // Get the current time elapsed
+  unsigned long currentMillis = millis();
 
+  // Only update if the interval has passed, we've transitioned into an idle state, and the current state != error
+  if (((currentMillis - previousMillis >= interval) || transitionIntoIdle) && currentState != error) {
+    previousMillis = currentMillis;
+    lcd.setCursor(0,0); 
+    lcd.print("Temp: ");
+    lcd.print(temperatureSensor.temperature);
+    lcd.print((char)223);
+    lcd.print("C");
+    lcd.setCursor(0,1);
+    lcd.print("Humidity: ");
+    lcd.print(temperatureSensor.humidity);
+    lcd.print("%");
+
+    transitionIntoIdle = false;
+  }
+}
+
+void displayError() {
+  // Write to LCD
+  lcd.clear();
+  lcd.setCursor(0,0); 
+  lcd.write("ERROR");
 }
 
 void displayError() {
