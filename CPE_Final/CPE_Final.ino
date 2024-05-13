@@ -327,7 +327,17 @@ void disableFan() {
 }
 
 void changeLED(led enabledLED) {
+  int mask = (0x1 << enabledLED);
 
+  // Disable all pins
+  *ledPinsPort &= 0;
+
+  // Output high to desired led
+  *ledPinsPort |= mask;
+}
+
+boolean buttonPressed(button button) {
+  return *buttonPinsPin & (0x1 << button);
 }
 
 boolean buttonPressed(button button) {
