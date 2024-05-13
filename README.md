@@ -25,6 +25,9 @@ This repository contains all files related to the Arduino Swamp Cooling System p
 - **CPE301_Technical Document.pdf**
   - **Description:** Main document containing detailed information and specifications of the swamp cooler project.
 
+- **CPE_Final/CPE_Final.ino**
+  - **Description:** Arduino code for the Swamp Cooling System.
+
 ### Additional Resources
 For further details on component specifications and project outcomes, refer to the technical document provided in this repository.
 
