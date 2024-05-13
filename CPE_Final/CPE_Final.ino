@@ -146,6 +146,7 @@ void setup() {
   adc_init();
 }
 
+//main loop function to control system behavior based on current state - Manuel
 void loop() {
   detectButtonPress();
   
@@ -195,6 +196,7 @@ void changeState(state state) {
   stateChanged = true;
 }
 
+//monitor the water level and handles the system states depnding on the threshold and current water level - Manuel
 void monitorWaterLevel() {
   // Read the water sensor pin
   double currentWaterLevel = adc_read(waterSensorPin);
@@ -213,6 +215,7 @@ void monitorWaterLevel() {
   } 
 }
 
+//monitors the temperature and controls the fan based on the temperature threshold - Manuel
 void monitorTemperature() {
   // Read the temperature sensor using the Arduino Library Methods
   temperatureSensor.read11(temperatureSensorPin);
@@ -295,6 +298,7 @@ void detectStateChange() {
   }
 }
 
+//prints the current date and time, displays a message when the motor is turned on, and sets the ENABLE pin to HIGH - Manuel
 void enableFan() {
   // Print the current date/time
   printCurrentDate();
@@ -310,6 +314,7 @@ void enableFan() {
   *fanPinsPort |= 0b100;
 }
 
+//does the same thing for enableFan except it sets the ENABLE pin to LOW - Manuel
 void disableFan() {
   // Print the current date/time
   printCurrentDate();
@@ -326,6 +331,7 @@ void disableFan() {
   *fanPinsPort &= ~0b100;
 }
 
+//changes the state of an LED based on the provided parameter - Manuel
 void changeLED(led enabledLED) {
   int mask = (0x1 << enabledLED);
 
@@ -336,10 +342,7 @@ void changeLED(led enabledLED) {
   *ledPinsPort |= mask;
 }
 
-boolean buttonPressed(button button) {
-  return *buttonPinsPin & (0x1 << button);
-}
-
+// simple function to check if a specific button is pressed - Manuel
 boolean buttonPressed(button button) {
   return *buttonPinsPin & (0x1 << button);
 }
@@ -515,6 +518,7 @@ void U0putchar(unsigned char U0pdata) {
   *myUDR0 = U0pdata;
 }
 
+//this code sets up the ADC for reading analog signals and then reads values from a specified channel - Manuel
 void adc_init() {
   // setup the A register
   *my_ADCSRA |= 0b10000000;  // set bit   7 to 1 to enable the ADC
