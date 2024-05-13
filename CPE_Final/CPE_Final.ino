@@ -28,6 +28,13 @@ volatile unsigned char* ledPinsDDR = 0x10A;
 volatile unsigned char* buttonPinsDDR = 0x24;
 volatile unsigned char* buttonPinsPin = 0x23;
 
+// Serial Variables
+volatile unsigned char *myUCSR0A = (unsigned char *)0x00C0;
+volatile unsigned char *myUCSR0B = (unsigned char *)0x00C1;
+volatile unsigned char *myUCSR0C = (unsigned char *)0x00C2;
+volatile unsigned int  *myUBRR0  = (unsigned int *) 0x00C4;
+volatile unsigned char *myUDR0   = (unsigned char *)0x00C6;
+
 // Keeps track of the current state of the swamp cooler
 state currentState;
 // Variable to keep track of what water level should allow the cooler to activate
@@ -302,11 +309,120 @@ void displayError() {
 
 }
 
+// Seperated date print to its own function due to its commonality -- Christian
 void printCurrentDate() {
+  // Get the individual numeric components of each time variable
+  char yearArray[4] = {'\0'};
+  char monthArray[2] = {'\0'};
+  char dayArray[2] = {'\0'};
 
+  int year = RTC.getYear();
+  int month = RTC.getMonth();
+  int day = RTC.getDay();
+
+  // Split it into arrays based on some algebra logic
+  yearArray[0] = (year / 1000) + '0'; year %= 1000;
+  yearArray[1] = (year / 100) + '0'; year %= 100;
+  yearArray[2] = (year / 10) + '0'; year %= 10;
+  yearArray[3] = year + '0'; 
+
+  monthArray[0] = (month / 10) + '0'; month %= 10;
+  monthArray[1] = month + '0'; 
+
+  dayArray[0] = (day / 10) + '0'; day %= 10;
+  dayArray[1] = day + '0'; 
+
+  // Loop through the array for each number, add dashes as separators
+  for (int i = 0; i < 4 && yearArray[i] != '\0'; i++) {
+    U0putchar(yearArray[i]);
+  }
+
+  U0putchar('-');
+
+  for (int i = 0; i < 2 && monthArray[i] != '\0'; i++) {
+    U0putchar(monthArray[i]);
+  }
+
+  U0putchar('-');
+
+  for (int i = 0; i < 2 && dayArray[i] != '\0'; i++) {
+    U0putchar(dayArray[i]);
+  }
+  U0putchar(' ');
 }
 
-
+// Same logic as date, except time will always be no more than two digits, and it's seperated by colons instead -- Christian
 void printCurrentTime() {
+  // Get the individual numeric components of each time variable
+  char hoursArray[2] = {'\0'};
+  char minutesArray[2] = {'\0'};
+  char secondsArray[2] = {'\0'};
 
+  int hours = RTC.getHours();
+  int minutes = RTC.getMinutes();
+  int seconds = RTC.getSeconds();
+
+  // Split it into arrays based on some algebra logic
+  hoursArray[0] = (hours / 10) + '0'; hours %= 10;
+  hoursArray[1] = hours + '0'; 
+
+  minutesArray[0] = (minutes / 10) + '0'; minutes %= 10;
+  minutesArray[1] = minutes + '0'; 
+
+  secondsArray[0] = (seconds / 10) + '0'; seconds %= 10;
+  secondsArray[1] = seconds + '0'; 
+
+  // Loop through the array for each number, add colons as separators
+
+  for (int i = 0; i < 2 && hoursArray[i] != '\0'; i++) {
+    U0putchar(hoursArray[i]);
+  }
+
+  U0putchar(':');
+
+  for (int i = 0; i < 2 && minutesArray[i] != '\0'; i++) {
+    U0putchar(minutesArray[i]);
+  }
+
+  U0putchar(':');
+
+  for (int i = 0; i < 2 && secondsArray[i] != '\0'; i++) {
+    U0putchar(secondsArray[i]);
+  }
+
+  // Add a dash to serpreate events
+  U0putchar(' ');
+  U0putchar('-');
+  U0putchar(' ');
+}
+
+void U0init(unsigned long U0baud) {
+ unsigned long FCPU = 16000000;
+ unsigned int tbaud;
+ tbaud = (FCPU / 16 / U0baud - 1);
+ // Same as (FCPU / (16 * U0baud)) - 1;
+ *myUCSR0A = 0x20;
+ *myUCSR0B = 0x18;
+ *myUCSR0C = 0x06;
+ *myUBRR0  = tbaud;
+}
+//
+// Read USART0 RDA status bit and return non-zero true if set
+//
+unsigned char U0kbhit() {
+  return *myUCSR0A & RDA;
+}
+//
+// Read input character from USART0 input buffer
+//
+unsigned char U0getchar() {
+  return *myUDR0;
+}
+//
+// Wait for USART0 (myUCSR0A) TBE to be set then write character to
+// transmit buffer
+//
+void U0putchar(unsigned char U0pdata) {
+  while (!(*myUCSR0A & TBE));
+  *myUDR0 = U0pdata;
 }
