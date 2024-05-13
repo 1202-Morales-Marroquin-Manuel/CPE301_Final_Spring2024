@@ -168,9 +168,14 @@ void loop() {
   }
 }
 
-
+// Changing state occurs often, useful to seperate the logic into a callable function - Christian
 void changeState(state state) {
-
+  // Based on the enum state, change the current state to the given parameter
+  currentState = state;
+  // Change the leds based on the state
+  changeLED((led)state);
+  // Update state variable (to intiate printing to serial monitor)
+  stateChanged = true;
 }
 
 void monitorWaterLevel() {
@@ -181,8 +186,39 @@ void monitorTemperature() {
 
 }
 
-void detectStateChange() {
+void detectStepperMotorPositionChange() {
+  
+}
 
+
+// Necessary requirement to display every state transition to the side - Christian
+void detectStateChange() {
+  // Display the date and time on every state transition
+  if (stateChanged) {
+    // Display date and time
+    printCurrentDate();
+    printCurrentTime();
+
+    // Generic state changed message
+    char message[13]= "State Changed";
+
+    for (int i = 0; i < 13; i++) {
+      U0putchar(message[i]);   
+    }
+
+    U0putchar(' ');   
+    U0putchar('(');   
+
+    // State the specific state it was changed into based on the 2D array
+    for (int i = 0; i < 9 && statesString[currentState][i] != '\0'; i++) {
+      U0putchar(statesString[currentState][i]);   
+    }
+    U0putchar(')');   
+
+    U0putchar('\n');
+    
+    stateChanged = false;
+  }
 }
 
 void enableFan() {
@@ -198,15 +234,32 @@ void changeLED(led enabledLED) {
 }
 
 boolean buttonPressed(button button) {
-
+  return *buttonPinsPin & (0x1 << button);
 }
 
+// Too crowded in the main loop, moved it to its own function - Christian
 void detectButtonPress() {
+  // If the button pressed is stop, and it is on a disable state, perform the following actions
+  if (buttonPressed(stop) && currentState != disabled) {
+    changeState(disabled);
+    disableFan();
+    lcd.clear();
+  }
 
+  // If the button reset is pressed, ensure it is currently in an error state and that the system is above the water level
+  if (buttonPressed(reset) && currentState == error && aboveWaterLevelThreshold) {
+    changeState(idle);
+    transitionIntoIdle = true;
+  }
 }
 
+// Start button must use an ISR, needed by final project - Christian
 void startButtonRoutine() {
   // USED FOR ISR
+    if (currentState == disabled) {
+    changeState(idle);
+    transitionIntoIdle = true;
+  }
 }
 
 void updateDisplay() {
