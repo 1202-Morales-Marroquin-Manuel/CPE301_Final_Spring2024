@@ -196,7 +196,21 @@ void changeState(state state) {
 }
 
 void monitorWaterLevel() {
+  // Read the water sensor pin
+  double currentWaterLevel = adc_read(waterSensorPin);
 
+  // If the current water level is above the threshold, update the boolean to reflect such
+  aboveWaterLevelThreshold = currentWaterLevel >= waterThreshold;
+  
+  // Go to an error state based on the state diagram
+  if ((currentState == idle && currentWaterLevel <= waterThreshold)
+  ||  (currentState == running && currentWaterLevel < waterThreshold)) {
+    changeState(error);
+    // Print out error state to LCD
+    displayError();
+    // Disable Fan Motor
+    disableFan();
+  } 
 }
 
 void monitorTemperature() {
