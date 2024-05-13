@@ -1,19 +1,36 @@
-# CPE301_Final_Spring2024
-You do not need to make any outer body for your cooler!!!
+# Arduino Swamp Cooling System
+## CPE 301.1102 Embedded Systems Design
+### University of Nevada, Reno
+#### Instructor: Dr. Bashira Akter Anima
 
-I just want to check your circuit and see for all the conditions, the stages are working properly or not. You can just give a sprinkle of water to check the water sensor or hold the temperature sensor to change the temperature value. 
+---
 
- 
+### Repository Overview
+This repository contains all files related to the Arduino Swamp Cooling System project, including designs, schematics, physical implementation photos, a demonstration video, and detailed technical documentation.
 
-FAQ:
+### File Descriptions
 
-Vent: You do not need to build any vent. Just activate your stepper motor when you are required to based on the project description. Add a piece of paper/wire/clip or anything with the motor so that we can see that the motor is moving.
+- **CPE301_Circuit Design.png**
+  - **Description:** Experimental Design of the Arduino Swamp Cooling System in Cirkit Designer.
 
-Motors: Check the Motors slide for some ideas. For the fan motor, make sure to check the provided TinkerCad link and the circuit to work with the fan motor. I am not looking for any speed so you do not need to use the analogWrite function to manipulate the speed value. Instead of that you can connect the speedpin to the Vcc or make it HIGH to give it max speed. Check the tinkercad code/circuit and you will get some ideas.
+- **CPE301_Circuit Schematic.png**
+  - **Description:** Schematic Design of the Arduino Swamp Cooling System in CircuitLab.
 
-ISR: Make sure to implement your own ISR for the start button. You can use attachInterrupt function for this reason. Check an example that's provided in the class module on canvas. For attachInterrupt() there are specific digital pins that will only work. Make sure to check the table here : https://www.arduino.cc/reference/en/language/functions/external-interrupts/attachinterrupt/
+- **CPE301_Physical Implementation.png**
+  - **Description:** Physical Implementation of the Arduino Swamp Cooling System, Top-Down View and Side View.
 
-Links to an external site.
+- **CPE301_Final_Demo.mp4**
+  - **Description:** Video demonstration of the Arduino Swamp Cooler in action, with narration.
 
-1-min Delay: ONLY for the 1-min delay you can use the millis() function https://docs.arduino.cc/built-in-examples/digital/BlinkWithoutDelay
-Links to an external site. 
+- **CPE301_Technical Document.pdf**
+  - **Description:** Main document containing detailed information and specifications of the swamp cooler project.
+
+### Additional Resources
+For further details on component specifications and project outcomes, refer to the technical document provided in this repository.
+
+### Authors
+- Christian Culanag
+- Manuel Morales-Marroquin
+
+### Collaboration and Work Distribution
+Both team members equally shared the workload, tackling both coding and design aspects of the project. We worked together on a single device for coding to immediately share feedback and make decisions quickly. This setup helped us make sure everything was done right the first time, whether we were sitting side by side or virtually. For the design and schematics, we each took on parts that matched our strengths but always came together to review each other's work. This teamwork ensured our project was well-coordinated and met all our goals.
