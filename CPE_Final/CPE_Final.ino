@@ -296,11 +296,34 @@ void detectStateChange() {
 }
 
 void enableFan() {
+  // Print the current date/time
+  printCurrentDate();
+  printCurrentTime();
+  // Display the motor was turned on
+  char message[12]= "Fan Motor On";
 
+  for (int i = 0; i < 12; i++) {
+    U0putchar(message[i]);   
+  }
+    U0putchar('\n');   
+  // Set ENABLE to HIGH
+  *fanPinsPort |= 0b100;
 }
 
 void disableFan() {
+  // Print the current date/time
+  printCurrentDate();
+  printCurrentTime();
+  // Display the motor was turned off
+  char message[13]= "Fan Motor Off";
 
+  for (int i = 0; i < 13; i++) {
+    U0putchar(message[i]);   
+  }
+    U0putchar('\n');   
+
+  // Set ENABLE to LOW
+  *fanPinsPort &= ~0b100;
 }
 
 void changeLED(led enabledLED) {
