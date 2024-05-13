@@ -68,6 +68,12 @@ int temperatureSensorPin = 50;
 const int RS = 9, EN = 10, D4 = 4, D5 = 5, D6 = 6, D7 = 7;
 LiquidCrystal lcd(RS, EN, D4, D5, D6, D7);
 
+// ADC variables, used for analog reading
+volatile unsigned char *my_ADMUX = (unsigned char *)0x7C;
+volatile unsigned char *my_ADCSRB = (unsigned char *)0x7B;
+volatile unsigned char *my_ADCSRA = (unsigned char *)0x7A;
+volatile unsigned int *my_ADC_DATA = (unsigned int *)0x78;
+
 // Water Sensor Variables
 int waterSensorPin = 15; 
 
