@@ -214,7 +214,18 @@ void monitorWaterLevel() {
 }
 
 void monitorTemperature() {
+  // Read the temperature sensor using the Arduino Library Methods
+  temperatureSensor.read11(temperatureSensorPin);
+  double currentTemperature = temperatureSensor.temperature;
 
+  // Change states based on the temperature (logic based on the state diagram provided)
+  if (currentState == idle && currentTemperature > temperatureThreshold) {
+    changeState(running);
+    enableFan();
+  } else if (currentState == running && currentTemperature <= temperatureThreshold) {
+    changeState(idle);
+    disableFan();
+  }
 }
 
 // Determine if vent button is pressed, update stepper motor pos and display to serial - Christian
