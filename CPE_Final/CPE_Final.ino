@@ -1,3 +1,7 @@
+// Group Project Members: Christian Culanag & Manuel Morales-Marroquin
+// CPE 301 Final Project
+// Due Date: 5/12/2024
+
 #include <I2C_RTC.h> // RTC Library
 #include <dht.h> // Humidty/Temp Sensor Library
 #include <LiquidCrystal.h> // LCD Screen
