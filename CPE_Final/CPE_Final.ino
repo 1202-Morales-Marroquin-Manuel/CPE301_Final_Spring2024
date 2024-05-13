@@ -186,8 +186,40 @@ void monitorTemperature() {
 
 }
 
+// Determine if vent button is pressed, update stepper motor pos and display to serial - Christian
 void detectStepperMotorPositionChange() {
-  
+  // Display the current date and time
+  // Vent Button Pressed
+  if (*ventButtonPin & 0b10) {
+    printCurrentDate();
+    printCurrentTime();
+    
+    // Print to serial that the stepper motor was pressed
+    char stepperMotorOn[16]= "Stepper Motor On";
+
+    for (int i = 0; i < 16; i++) {
+      U0putchar(stepperMotorOn[i]);   
+    }
+    U0putchar('\n');
+
+    // Move the stepper motor only 1/4 of the entire revolution
+    stepper.setSpeed(5);
+    stepper.step(direction * (stepsPerRevolution / 4));
+    // Flip direction
+    direction *= -1;
+
+    // Display the current date and time
+    printCurrentDate();
+    printCurrentTime();
+    
+    // Show that the stepper motor has been disabled
+    char stepperMotorOff[17]= "Stepper Motor Off";
+
+    for (int i = 0; i < 17; i++) {
+      U0putchar(stepperMotorOff[i]);   
+    }
+    U0putchar('\n');
+  }
 }
 
 
